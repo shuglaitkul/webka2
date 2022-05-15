@@ -6,9 +6,14 @@ const UsersSchema = require('./models/Users');
 
 const app = express();
 
+app.engine('hbs', hbs.express4({partialsDir: __dirname + '/views'}));
+
 app.use(bodyParser.json());
 app.use(express.static('static'))
 app.use(bodyParser.urlencoded({ extended: true}))
+
+app.set('view engine', 'hbs');
+app.set('views', __dirname + '/views');
 
 mongoose.connect('mongodb://127.0.0.1:27017/RegForm',{
     useNewUrlParser:true,
@@ -91,8 +96,9 @@ app.get('/bags', (req,res) => {
     res.sendFile( __dirname + '/html/bags.html')
 })
 
-app.get('/profile', (req, res) => {
-    res.sendFile(__dirname + '/html/profile.html')
+app.get('/profile', async (req, res) => {
+    let user = await UsersSchema.findOne({username: 'Daniil'}).lean()
+    res.render('profile', {user: user})
 })
 
 app.get('/manga', (req,res) => {
