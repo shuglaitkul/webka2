@@ -23,8 +23,8 @@ app.get('/register', (req,res) => {
     res.sendFile( __dirname + '/html/profile.html')
 })
 
-app.get('/bag', (req,res) => {
-    res.sendFile( __dirname + '/html/bag.html')
+app.get('/bags', (req,res) => {
+    res.sendFile( __dirname + '/html/bags.html')
 })
 
 app.get('/manga', (req,res) => {
@@ -82,6 +82,7 @@ app.post("/signup", (req,res)=>{
 
     return res.redirect('/signup')
 })
+
 app.get("/", function (req,res){
     res.set({
         "Allow-access-Allow-Origin": '*'
