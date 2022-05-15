@@ -56,7 +56,35 @@ app.post("/signup", async (req, res) => {
     let name = req.body.name;
     let email = req.body.email;
     let password = req.body.password;
+    let password_confirm = req.body.password_confirm;
 
+    if(password !== password_confirm){
+        return res.send("Passwords didn't match");
+    }
+
+    if(await UsersSchema.findOne({email: email}).lean() !== null){
+        return res.send("Email already taken")
+    }
+
+    if(await UsersSchema.findOne({username: name}).lean() !== null){
+        return res.send("Username already taken")
+    }
+
+    if (password.toUpperCase() === password) {
+        return res.send("Password does not contain small letters");
+    }
+    if(password.toLowerCase() === password){
+        return res.send("Password doesn't contain capital letters")
+    }
+
+    if(password.search(".") === -1){
+        return res.send("Password does not contain special contains")
+    } else if(password.search("_") === -1){
+        return res.send("Password does not contain special contains")
+    }
+    if(password.length < 7){
+        return res.send("Password less than 7 symbols")
+    }
     let data = {
         "username": name,
         "email": email,
@@ -64,7 +92,7 @@ app.post("/signup", async (req, res) => {
         "password": password
     }
 
-    await UsersSchema.create(data);
+    // await UsersSchema.create(data);
 
     return res.redirect('/profile');
 })
