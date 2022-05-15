@@ -1,7 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const hbs = require("express-hbs")
+const hbs = require("express-hbs");
+const UsersSchema = require('./models/Users');
 
 const app = express();
 
@@ -51,36 +52,21 @@ app.get('/main', (req,res) => {
     res.sendFile( __dirname + '/html/index.html')
 })
 
-app.post("/signup", (req,res)=>{
+app.post("/signup", async (req, res) => {
     let name = req.body.name;
     let email = req.body.email;
     let password = req.body.password;
 
-    app.get('/user/show/:name', async function (req, res) {
-        let name = req.params.name;
-        let user = await db.collection("reglog").findOne({name: name});
-        res.render('user', {user: user});
-    });
-
-    app.get('/signup', async function (req, res) {
-        let name = req.params.name;
-        let user = await db.collection.findOne({name: name});
-        res.render('/Public/registration_successfull', {user: user});
-    });
-
     let data = {
-        "name": name,
-        "email":email,
+        "username": name,
+        "email": email,
+        "city": "test",
         "password": password
     }
-    db.collection('reglog').insertOne(data,(err, collection)=> {
-        if(err){
-            throw err;
-        }
-        console.log("Record Inserted Successfully");
-    });
 
-    return res.redirect('/signup')
+    await UsersSchema.create(data);
+
+    return res.redirect('/profile');
 })
 
 app.get("/", function (req,res){
