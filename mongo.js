@@ -92,7 +92,7 @@ app.post("/signup", async (req, res) => {
         "password": password
     }
 
-    // await UsersSchema.create(data);
+    await UsersSchema.create(data);
 
     return res.redirect('/profile');
 })
