@@ -21,38 +21,10 @@ db.on('error',()=>console.log("Error to connection"));
 db.once('open',()=>console.log("Connected to Database"));
 
 app.get('/register', (req,res) => {
-    res.sendFile( __dirname + '/html/profile.html')
+    res.sendFile( __dirname + '/html/register.html')
 })
 
-app.get('/bags', (req,res) => {
-    res.sendFile( __dirname + '/html/bags.html')
-})
-
-app.get('/manga', (req,res) => {
-    res.sendFile( __dirname + '/html/manga.html')
-})
-
-app.get('/reports', (req,res) => {
-    res.sendFile( __dirname + '/html/reports.html')
-})
-
-app.get('/pillow', (req,res) => {
-    res.sendFile( __dirname + '/html/pillow.html')
-})
-
-app.get('/futbolka', (req,res) => {
-    res.sendFile( __dirname + '/html/futbolka.html')
-})
-
-app.get('/figure', (req,res) => {
-    res.sendFile( __dirname + '/html/figure.html')
-})
-
-app.get('/main', (req,res) => {
-    res.sendFile( __dirname + '/html/index.html')
-})
-
-app.post("/signup", async (req, res) => {
+app.post("/register", async (req, res) => {
     let name = req.body.name;
     let email = req.body.email;
     let password = req.body.password;
@@ -95,6 +67,56 @@ app.post("/signup", async (req, res) => {
     await UsersSchema.create(data);
 
     return res.redirect('/profile');
+})
+
+
+app.get('/login', (req, res) => {
+    res.sendFile(__dirname + '/html/login.html')
+})
+
+app.post('/login', async (req, res) => {
+    let username = req.body.name;
+    let password = req.body.password;
+
+    if (await UsersSchema.findOne({username: username, password:password}).lean() === null) {
+        return res.send("Username or password is wrong")
+    }
+
+    return res.redirect('/profile')
+})
+
+
+
+app.get('/bags', (req,res) => {
+    res.sendFile( __dirname + '/html/bags.html')
+})
+
+app.get('/profile', (req, res) => {
+    res.sendFile(__dirname + '/html/profile.html')
+})
+
+app.get('/manga', (req,res) => {
+    res.sendFile( __dirname + '/html/manga.html')
+})
+
+app.get('/reports', (req,res) => {
+    res.sendFile( __dirname + '/html/reports.html')
+})
+
+app.get('/pillow', (req,res) => {
+    res.sendFile( __dirname + '/html/pillow.html')
+})
+
+app.get('/futbolka', (req,res) => {
+    res.sendFile( __dirname + '/html/futbolka.html')
+})
+
+app.get('/figure', (req,res) => {
+    res.sendFile( __dirname + '/html/figure.html')
+})
+
+app.get('/main', (req,res) => {
+    res.sendFile( __dirname + '/html/index.html')
 })
 
 app.get("/", function (req,res){
