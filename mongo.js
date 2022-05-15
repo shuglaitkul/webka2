@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const hbs = require("express-hbs");
 const UsersSchema = require('./models/Users');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.engine('hbs', hbs.express4({partialsDir: __dirname + '/views'}));
 app.use(bodyParser.json());
 app.use(express.static('static'))
 app.use(bodyParser.urlencoded({ extended: true}))
+app.use(cookieParser())
 
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
@@ -82,10 +84,13 @@ app.get('/login', (req, res) => {
 app.post('/login', async (req, res) => {
     let username = req.body.name;
     let password = req.body.password;
+    let user = await UsersSchema.findOne({username: username, password:password}).lean()
 
-    if (await UsersSchema.findOne({username: username, password:password}).lean() === null) {
+    if (user === null) {
         return res.send("Username or password is wrong")
     }
+
+    res.cookie("user", user)
 
     return res.redirect('/profile')
 })
@@ -97,8 +102,7 @@ app.get('/bags', (req,res) => {
 })
 
 app.get('/profile', async (req, res) => {
-    let user = await UsersSchema.findOne({username: 'Daniil'}).lean()
-    res.render('profile', {user: user})
+    res.render('profile', {user: req.cookies.user})
 })
 
 app.get('/manga', (req,res) => {
