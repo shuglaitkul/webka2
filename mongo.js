@@ -18,6 +18,12 @@ app.use(cookieParser())
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
 
+hbs.registerHelper("inc", function(value, options)
+{
+    return parseInt(value) + 1;
+});
+
+
 mongoose.connect('mongodb://127.0.0.1:27017/RegForm',{
     useNewUrlParser:true,
     useUnifiedTopology: true
@@ -93,12 +99,40 @@ app.post('/login', async (req, res) => {
     res.cookie("user", user)
 
     if(await AdminSchema.findOne({username: username}).lean() !== null){
-        return res.redirect('/admin')
+        return res.redirect('/admins')
     }
     return res.redirect('/profile')
 })
 
+app.get('/admins', async (req, res) => {
+    let users = await UsersSchema.find().lean();
+    res.render('admins', {users: users})
+})
 
+app.get('/delete_user/:username', async (req, res) => {
+    let username = req.params.username;
+    console.log(username)
+    await UsersSchema.deleteOne({username: username})
+    return res.redirect('/admins')
+})
+
+app.get('/edit_user/:username', async (req, res) => {
+    let username = req.params.username;
+    let user = await UsersSchema.findOne({username:username}).lean()
+    return res.render('edit', {user:user})
+})
+
+app.post('/edit_user/:username', async(req, res) => {
+    let username = req.params.username;
+
+    let new_username = req.body.name;
+    let new_email = req.body.email;
+    let new_city = req.body.city;
+
+    await UsersSchema.updateOne({username: username}, {username: new_username, email: new_email, city: new_city});
+
+    return res.redirect('/admins')
+})
 
 app.get('/bags', (req,res) => {
     res.sendFile( __dirname + '/html/bags.html')
