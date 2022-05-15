@@ -1,9 +1,9 @@
 const express = require("express");
-const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const hbs = require("express-hbs")
 
+const app = express();
 
 app.use(bodyParser.json());
 app.use(express.static('static'))
@@ -20,35 +20,35 @@ db.on('error',()=>console.log("Error to connection"));
 db.once('open',()=>console.log("Connected to Database"));
 
 app.get('/register', (req,res) => {
-    res.sendFile( __dirname + '/Public/profile.html')
+    res.sendFile( __dirname + '/html/profile.html')
 })
 
 app.get('/bag', (req,res) => {
-    res.sendFile( __dirname + '/bag.html')
+    res.sendFile( __dirname + '/html/bag.html')
 })
 
 app.get('/manga', (req,res) => {
-    res.sendFile( __dirname + '/manga.html')
+    res.sendFile( __dirname + '/html/manga.html')
 })
 
 app.get('/reports', (req,res) => {
-    res.sendFile( __dirname + '/reports.html')
+    res.sendFile( __dirname + '/html/reports.html')
 })
 
 app.get('/pillow', (req,res) => {
-    res.sendFile( __dirname + '/pillow.html')
+    res.sendFile( __dirname + '/html/pillow.html')
 })
 
 app.get('/futbolka', (req,res) => {
-    res.sendFile( __dirname + '/futbolka.html')
+    res.sendFile( __dirname + '/html/futbolka.html')
 })
 
 app.get('/figure', (req,res) => {
-    res.sendFile( __dirname + '/figure.html')
+    res.sendFile( __dirname + '/html/figure.html')
 })
 
 app.get('/main', (req,res) => {
-    res.sendFile( __dirname + '/index.html')
+    res.sendFile( __dirname + '/html/index.html')
 })
 
 app.post("/signup", (req,res)=>{
