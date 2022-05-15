@@ -109,6 +109,70 @@ app.get('/admins', async (req, res) => {
     res.render('admins', {users: users})
 })
 
+app.get('/sort_by_username', async (req, res) => {
+    let users = await UsersSchema.find().sort({username: 'asc'}).lean();
+    res.render('admins', {users: users})
+})
+
+
+app.get('/sort_by_email', async (req, res) => {
+    let users = await UsersSchema.find().sort({email: 'asc'}).lean();
+    res.render('admins', {users: users})
+})
+
+app.get('/sort_by_city', async (req, res) => {
+    let users = await UsersSchema.find().sort({city: 'asc'}).lean();
+    res.render('admins', {users: users})
+})
+
+app.get('/add_user', (req, res)=>{
+    res.sendFile(__dirname + '/html/add_user.html')
+})
+
+app.post('/add_user', async (req, res) => {
+    let name = req.body.name;
+    let email = req.body.email;
+    let password = req.body.password;
+    let password_confirm = req.body.password_confirm;
+
+    if (password !== password_confirm) {
+        return res.send("Passwords didn't match");
+    }
+
+    if (await UsersSchema.findOne({email: email}).lean() !== null) {
+        return res.send("Email already taken")
+    }
+
+    if (await UsersSchema.findOne({username: name}).lean() !== null) {
+        return res.send("Username already taken")
+    }
+
+    if (password.toUpperCase() === password) {
+        return res.send("Password does not contain small letters");
+    }
+    if (password.toLowerCase() === password) {
+        return res.send("Password doesn't contain capital letters")
+    }
+
+    if (password.search(".") === -1 || password.search("_") === -1) {
+        return res.send("Password does not contain special contains")
+    }
+
+    if (password.length < 7) {
+        return res.send("Password less than 7 symbols")
+    }
+    let data = {
+        "username": name,
+        "email": email,
+        "city": "test",
+        "password": password
+    }
+
+    await UsersSchema.create(data);
+
+    return res.redirect('/admins');
+})
+
 app.get('/delete_user/:username', async (req, res) => {
     let username = req.params.username;
     console.log(username)
