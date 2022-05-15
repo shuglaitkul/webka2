@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const hbs = require("express-hbs");
 const UsersSchema = require('./models/Users');
+const AdminSchema = require('./models/Admins')
 const cookieParser = require('cookie-parser');
 
 const app = express();
@@ -56,11 +57,10 @@ app.post("/register", async (req, res) => {
         return res.send("Password doesn't contain capital letters")
     }
 
-    if(password.search(".") === -1){
-        return res.send("Password does not contain special contains")
-    } else if(password.search("_") === -1){
+    if(password.search(".") === -1 || password.search("_") === -1){
         return res.send("Password does not contain special contains")
     }
+    x
     if(password.length < 7){
         return res.send("Password less than 7 symbols")
     }
@@ -73,7 +73,7 @@ app.post("/register", async (req, res) => {
 
     await UsersSchema.create(data);
 
-    return res.redirect('/profile');
+    return res.redirect('/login');
 })
 
 
@@ -92,6 +92,9 @@ app.post('/login', async (req, res) => {
 
     res.cookie("user", user)
 
+    if(await AdminSchema.findOne({username: username}).lean() !== null){
+        return res.redirect('/admin')
+    }
     return res.redirect('/profile')
 })
 
