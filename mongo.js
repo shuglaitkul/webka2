@@ -24,6 +24,7 @@ hbs.registerHelper("inc", function(value, options)
 });
 
 
+
 mongoose.connect('mongodb://127.0.0.1:27017/RegForm',{
     useNewUrlParser:true,
     useUnifiedTopology: true
@@ -66,7 +67,6 @@ app.post("/register", async (req, res) => {
     if(password.search(".") === -1 || password.search("_") === -1){
         return res.send("Password does not contain special contains")
     }
-    x
     if(password.length < 7){
         return res.send("Password less than 7 symbols")
     }
@@ -164,7 +164,6 @@ app.post('/add_user', async (req, res) => {
     let data = {
         "username": name,
         "email": email,
-        "city": "test",
         "password": password
     }
 
