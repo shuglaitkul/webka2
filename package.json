@@ -7,5 +7,8 @@
     "express-hbs": "^2.4.0",
     "express-session": "^1.17.2",
     "mongoose": "^6.3.3"
+  },
+  "scripts": {
+    "start": "node mongo.js"
   }
 }

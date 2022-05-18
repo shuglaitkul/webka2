@@ -25,7 +25,7 @@ hbs.registerHelper("inc", function(value, options)
 
 
 
-mongoose.connect('mongodb://127.0.0.1:27017/RegForm',{
+mongoose.connect('mongodb+srv://roquefort:SuperSyr29@cluster0.wsvfe.mongodb.net/?retryWrites=true&w=majority',{
     useNewUrlParser:true,
     useUnifiedTopology: true
 });
