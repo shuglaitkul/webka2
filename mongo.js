@@ -236,6 +236,6 @@ app.get("/", function (req,res){
     return res.redirect('/register')
 })
 
-app.listen(2929, function () {
+app.listen(process.env.PORT || 2929, function () {
     console.log("Server Started");
 })
