@@ -290,3 +290,44 @@ input[type=submit] {
   margin: 4px 2px;
   border-radius: 10px;
 }
+.Adress {
+  padding-top: 30px;
+  align-content: center;
+  font-family: 'Montserrat', monospace;
+  width: 100%;
+  color: black;
+  font-size: 15px;
+  font-weight: bolder;
+  letter-spacing: 1px;
+  text-align: center;
+  padding-bottom: 30px;
+}
+
+.Adress a{
+  font-family: 'Montserrat', monospace;
+  width: 100%;
+  color: black;
+  font-size: 15px;
+  font-weight: bolder;
+  letter-spacing: 1px;
+  text-align: right;
+  padding-top: 30px;
+}
+
+.Adress h2{
+  font-family: 'Comfortaa', fantasy;
+  font-weight: bolder;
+  width: 100%;
+  color: black;
+  letter-spacing: 1px;
+  text-align: center;
+  padding-top: 10px;
+}
+
+#map{
+  height: 450px;
+  width: auto;
+  margin: 50px;
+  border: 3px solid black;
+  border-radius: 50px;
+}
